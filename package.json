@@ -1,0 +1,20 @@
+{
+  "name": "win-java",
+  "version": "1.0.0",
+  "description": "windows java path setting",
+  "main": "./lib/index.js",
+  "bin": {
+    "win-java": "bin/win-java.js"
+  },
+  "scripts": {
+    "test": "node index.js"
+  },
+  "keywords": [
+    "win-java"
+  ],
+  "author": "heekng",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.2"
+  }
+}
