@@ -1,10 +1,14 @@
 import print from './print';
+import pathFinder from './path-finder';
+import path from 'path';
+import fs from 'fs-extra';
+
+const PATH = path.join(pathFinder.getJsonPath(), "/");
 
 const start = function () {
     const command = process.argv[2];
     
     if (command === 'init') {
-        print.red("init");
         init();
     } else if (command === 'show') {
         print.gray("show");
@@ -17,8 +21,11 @@ const start = function () {
         process.exit();
     }
 }
-
+ 
 const init = function () {
+    const jsonPath = PATH + 'jenvSet.json';
+    createJenvSetJson(jsonPath);
+    print.yellow('init jenvSet.json\nPATH => ' + jsonPath);
 }
 
 const show = function () {
@@ -26,5 +33,23 @@ const show = function () {
 
 const set = function (jdk_name) {
 }
+
+function createJenvSetJson(filePath) {
+    const content = '{\n' +
+        '   "ex)jdkName":"ex)jdk bin Path"\n' + 
+        '}';
+    saveBlogJson(content);
+}
+
+const saveBlogJson = async (blogJson) => {
+    const content = (typeof blogJson) === 'string' ? blogJson : JSON.stringify(blogJson);
+    try {
+        return await fs.writeFile(PATH + 'jenvSet.json', content, 'utf8');
+
+    } catch (err) {
+        print.red('error! retry please.');
+        throw err;
+    }
+};
 
 exports.start = start;
