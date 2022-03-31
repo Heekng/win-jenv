@@ -28,7 +28,13 @@ const init = function () {
     print.yellow('init jenvSet.json\nPATH => ' + jsonPath);
 }
 
-const show = function () {
+const show = async function () {
+    const jenvSetObj = await readBlogJson();
+    print.yellow('win-jenv jdk saved list:')
+    for (let index = 0; index < Object.keys(jenvSetObj).length; index++) {
+        const name = Object.keys(jenvSetObj)[index];
+        print.yellow((index+1) + '. ' + name + ': ' + jenvSetObj[name])
+    }
 }
 
 const set = function (jdk_name) {
@@ -51,5 +57,14 @@ const saveBlogJson = async (blogJson) => {
         throw err;
     }
 };
+
+const readBlogJson = async () => {
+    try{
+        return await fs.readJson(PATH + 'jenvSet.json', 'utf8');
+    } catch (err) {
+        print.red('error! check ' + PATH + 'jenvSet.json')
+        throw err;
+    }
+}
 
 exports.start = start;
