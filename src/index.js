@@ -24,7 +24,7 @@ const start = function () {
         const jdk_name = process.argv[3];
         remove(jdk_name);
     } else {
-        print.yellow("win-java \<command\> \ncommand are init, show, set");
+        print.yellow("win-java \<command\> \ncommand are init, show, set, add, delete");
         process.exit();
     }
 }
