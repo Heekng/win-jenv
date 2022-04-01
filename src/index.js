@@ -16,6 +16,10 @@ const start = function () {
     } else if (command === 'set') {
         const jdk_name = process.argv[3];
         set(jdk_name);
+    } else if (command === 'add') {
+        const jdk_name = process.argv[3];
+        const jdk_path = process.argv[4];
+        add(jdk_name, jdk_path);
     } else {
         print.yellow("win-java \<command\> \ncommand are init, show, set");
         process.exit();
@@ -50,6 +54,17 @@ const set = async jdk_name => {
         process.exit();
     }
     setJavaHome(jdk_path);
+}
+
+const add = async (jdk_name, jdk_path) => {
+    const jsonPath = PATH + 'jenvSet.json';
+    if (await hasJdkName(jdk_name)) {
+        print.red(jdk_name + ' is exist\nplease another name');
+        process.exit();
+    }
+    await addJdk(jdk_name, jdk_path, jsonPath);
+    print.yellow('jdk add success!\n' + jdk_name + ': ' + jdk_path);
+    process.exit();
 }
 
 
@@ -95,6 +110,22 @@ const findJdkPath = async (jdk_name) => {
     const jenvSetObj = await readBlogJson();
     const jdk_path = jenvSetObj[jdk_name];
     return jdk_path ? jdk_path : '';
+}
+
+const hasJdkName = async (jdk_name) => {
+    const jenvSetObj = await readBlogJson();
+    return jenvSetObj.hasOwnProperty(jdk_name);
+}
+
+const addJdk = async (jdk_name, jdk_path, jsonPath) => {
+    const jenvSetObj = await readBlogJson();
+    jenvSetObj[jdk_name] = jdk_path;
+    try {
+        return await fs.writeFile(jsonPath, JSON.stringify(jenvSetObj), 'utf8');
+    } catch (err) {
+        print.red('error! retry please.');
+        throw err;
+    }
 }
 
 const setJavaHome = (jdk_path) => {
