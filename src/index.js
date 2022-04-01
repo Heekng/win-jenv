@@ -30,10 +30,11 @@ const init = function () {
 
 const show = async function () {
     const jenvSetObj = await readBlogJson();
-    print.yellow('win-jenv jdk saved list:')
+    print.yellow('PATH => ' + PATH + 'jenvSet.json')
+    print.yellow('win-jenv jdk saved list')
     for (let index = 0; index < Object.keys(jenvSetObj).length; index++) {
         const name = Object.keys(jenvSetObj)[index];
-        print.yellow((index+1) + '. ' + name + ': ' + jenvSetObj[name])
+        print.yellow((index+1) + '.\t' + name + ':\t' + jenvSetObj[name])
     }
 }
 
