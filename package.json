@@ -10,7 +10,7 @@
     "start": "node bin/win-jenv.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel src -d dist",
-    "prepublish": "npm run build"
+    "deployee": "npm run build\nnpm publish"
   },
   "keywords": [
     "win-jenv",
