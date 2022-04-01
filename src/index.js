@@ -20,6 +20,9 @@ const start = function () {
         const jdk_name = process.argv[3];
         const jdk_path = process.argv[4];
         add(jdk_name, jdk_path);
+    } else if (command === 'delete') {
+        const jdk_name = process.argv[3];
+        remove(jdk_name);
     } else {
         print.yellow("win-java \<command\> \ncommand are init, show, set");
         process.exit();
@@ -59,11 +62,22 @@ const set = async jdk_name => {
 const add = async (jdk_name, jdk_path) => {
     const jsonPath = PATH + 'jenvSet.json';
     if (await hasJdkName(jdk_name)) {
-        print.red(jdk_name + ' is exist\nplease another name');
+        print.red(jdk_name + ' is exist\nplease input another name');
         process.exit();
     }
     await addJdk(jdk_name, jdk_path, jsonPath);
     print.yellow('jdk add success!\n' + jdk_name + ': ' + jdk_path);
+    process.exit();
+}
+
+const remove = async (jdk_name) => {
+    const jsonPath = PATH + 'jenvSet.json';
+    if (!await hasJdkName(jdk_name)) {
+        print.red(jdk_name + ' is not exist\nplease input another name');
+        process.exit();
+    }
+    await removeJdk(jdk_name, jsonPath);
+    print.yellow('jdk remove success!\n' + jdk_name);
     process.exit();
 }
 
@@ -120,6 +134,17 @@ const hasJdkName = async (jdk_name) => {
 const addJdk = async (jdk_name, jdk_path, jsonPath) => {
     const jenvSetObj = await readBlogJson();
     jenvSetObj[jdk_name] = jdk_path;
+    try {
+        return await fs.writeFile(jsonPath, JSON.stringify(jenvSetObj), 'utf8');
+    } catch (err) {
+        print.red('error! retry please.');
+        throw err;
+    }
+}
+
+const removeJdk = async (jdk_name, jsonPath) => {
+    const jenvSetObj = await readBlogJson();
+    delete jenvSetObj[jdk_name];
     try {
         return await fs.writeFile(jsonPath, JSON.stringify(jenvSetObj), 'utf8');
     } catch (err) {
