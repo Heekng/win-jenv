@@ -44,8 +44,7 @@ const set = async function (jdk_name) {
         print.red('error! not exist key.');
         process.exit();
     }
-    const returnText = setJavaHome(jdk_path);
-
+    setJavaHome(jdk_path);
 }
 
 
