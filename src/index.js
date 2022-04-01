@@ -52,19 +52,30 @@ function createJenvSetJson(filePath) {
     const content = '{\n' +
         '   "ex)jdkName":"ex)jdk bin Path"\n' + 
         '}';
-    saveBlogJson(content);
+    const fileExist = checkJenvSetJson(filePath);
+    if (fileExist) {
+        print.red("file is exist\nplease check path => " + filePath);
+        process.exit();
+    }
+    saveJenvSetJson(content, filePath);
 }
 
-const saveBlogJson = async (blogJson) => {
+const saveJenvSetJson = async (blogJson, filePath) => {
     const content = (typeof blogJson) === 'string' ? blogJson : JSON.stringify(blogJson);
     try {
-        return await fs.writeFile(PATH + 'jenvSet.json', content, 'utf8');
+        return await fs.writeFile(filePath, content, 'utf8');
 
     } catch (err) {
         print.red('error! retry please.');
         throw err;
     }
 };
+
+const checkJenvSetJson = async (filePath) => {
+    await fs.exists(filePath, function (exists) {
+        return exists;
+    })
+}
 
 const readBlogJson = async () => {
     try{
