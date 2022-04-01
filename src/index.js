@@ -82,19 +82,14 @@ async function findJdkPath(jdk_name) {
     return jdk_path ? jdk_path : '';
 }
 
-function  setJavaHome(jdk_path) {
-    const inputCmd = 'setx /M JAVA_HOME "'+jdk_path+'"';
-    console.log(inputCmd);
-    try {
-        child_process.execSync(inputCmd, (err, out, stderr) => {
-            console.log(err);
-            console.log(out);
-            console.log(stderr);
-        })    
-    } catch (e) {
-        console.log(e);
-    }
-    
+function setJavaHome(jdk_path) {
+    const inputCmd = 'setx -M JAVA_HOME "'+jdk_path+'"';
+    child_process.exec(inputCmd, (err, out, stderr) => {
+        if (err == null) {
+            print.yellow('JAVA_HOME path setting success!\nplease close and open terminal');
+        }
+    })
+
 }
 
 exports.start = start;
