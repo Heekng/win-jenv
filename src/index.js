@@ -2,6 +2,7 @@ import print from './print';
 import pathFinder from './path-finder';
 import path from 'path';
 import fs from 'fs-extra';
+import child_process from 'child_process';
 
 const PATH = path.join(pathFinder.getJsonPath(), "/");
 
@@ -44,7 +45,7 @@ const set = async function (jdk_name) {
         process.exit();
     }
     const returnText = setJavaHome(jdk_path);
-    console.log(returnText);
+
 }
 
 
@@ -81,10 +82,19 @@ async function findJdkPath(jdk_name) {
     return jdk_path ? jdk_path : '';
 }
 
-function setJavaHome(jdk_path) {
-    console.log(process.env.JAVA_HOME);
-    console.log(jdk_path);
-    return process.env.JAVA_HOME = jdk_path;
+function  setJavaHome(jdk_path) {
+    const inputCmd = 'setx /M JAVA_HOME "'+jdk_path+'"';
+    console.log(inputCmd);
+    try {
+        child_process.execSync(inputCmd, (err, out, stderr) => {
+            console.log(err);
+            console.log(out);
+            console.log(stderr);
+        })    
+    } catch (e) {
+        console.log(e);
+    }
+    
 }
 
 exports.start = start;
