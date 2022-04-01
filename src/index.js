@@ -11,7 +11,6 @@ const start = function () {
     if (command === 'init') {
         init();
     } else if (command === 'show') {
-        print.gray("show");
         show();
     } else if (command === 'set') {
         const jdk_name = process.argv[3];
@@ -38,8 +37,16 @@ const show = async function () {
     }
 }
 
-const set = function (jdk_name) {
+const set = async function (jdk_name) {
+    const jdk_path = await findJdkPath(jdk_name);
+    if (!jdk_path) {
+        print.red('error! not exist key.');
+        process.exit();
+    }
+    const returnText = setJavaHome(jdk_path);
+    console.log(returnText);
 }
+
 
 function createJenvSetJson(filePath) {
     const content = '{\n' +
@@ -68,5 +75,16 @@ const readBlogJson = async () => {
     }
 }
 
+async function findJdkPath(jdk_name) {
+    const jenvSetObj = await readBlogJson();
+    const jdk_path = jenvSetObj[jdk_name];
+    return jdk_path ? jdk_path : '';
+}
+
+function setJavaHome(jdk_path) {
+    console.log(process.env.JAVA_HOME);
+    console.log(jdk_path);
+    return process.env.JAVA_HOME = jdk_path;
+}
 
 exports.start = start;
