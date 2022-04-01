@@ -22,13 +22,13 @@ const start = function () {
     }
 }
  
-const init = function () {
+const init = () => {
     const jsonPath = PATH + 'jenvSet.json';
     createJenvSetJson(jsonPath);
     print.yellow('init jenvSet.json\nPATH => ' + jsonPath);
 }
 
-const show = async function () {
+const show = async () => {
     const jenvSetObj = await readBlogJson();
     print.yellow('PATH => ' + PATH + 'jenvSet.json')
 
@@ -43,7 +43,7 @@ const show = async function () {
     }
 }
 
-const set = async function (jdk_name) {
+const set = async jdk_name => {
     const jdk_path = await findJdkPath(jdk_name);
     if (!jdk_path) {
         print.red('error! not exist key.');
@@ -53,7 +53,7 @@ const set = async function (jdk_name) {
 }
 
 
-function createJenvSetJson(filePath) {
+const createJenvSetJson = (filePath) => {
     const content = '{\n' +
         '   "ex)jdkName":"ex)jdk bin Path"\n' + 
         '}';
@@ -91,20 +91,19 @@ const readBlogJson = async () => {
     }
 }
 
-async function findJdkPath(jdk_name) {
+const findJdkPath = async (jdk_name) => {
     const jenvSetObj = await readBlogJson();
     const jdk_path = jenvSetObj[jdk_name];
     return jdk_path ? jdk_path : '';
 }
 
-function setJavaHome(jdk_path) {
+const setJavaHome = (jdk_path) => {
     const inputCmd = 'setx -M JAVA_HOME "'+jdk_path+'"';
     child_process.exec(inputCmd, (err, out, stderr) => {
         if (err == null) {
             print.yellow('JAVA_HOME path setting success!\nplease close and open terminal');
         }
     })
-
 }
 
 exports.start = start;
