@@ -1,6 +1,6 @@
 {
   "name": "win-jenv",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "windows java path setting",
   "main": "./lib/index.js",
   "bin": {
