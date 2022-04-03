@@ -1,6 +1,6 @@
 {
   "name": "win-jenv",
-  "version": "1.0.1",
+  "version": "1.0.5",
   "description": "windows java path setting",
   "main": "./lib/index.js",
   "bin": {
@@ -20,6 +20,7 @@
   "author": "heekng",
   "license": "ISC",
   "dependencies": {
+    "@babel/runtime": "^7.17.8",
     "chalk": "^4.1.2",
     "commander": "^9.1.0",
     "fs-extra": "^10.0.1",

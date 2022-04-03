@@ -29,9 +29,9 @@ const start = function () {
     }
 }
  
-const init = () => {
-    const jsonPath = PATH + 'jenvSet.json';
-    createJenvSetJson(jsonPath);
+const init = async () => {
+    const jsonPath = PATH + 'jenvSet.json';w
+    await createJenvSetJson(jsonPath);
     print.yellow('init jenvSet.json\nPATH => ' + jsonPath);
 }
 
@@ -82,11 +82,11 @@ const remove = async (jdk_name) => {
 }
 
 
-const createJenvSetJson = (filePath) => {
+const createJenvSetJson = async (filePath) => {
     const content = '{\n' +
         '   "ex)jdkName":"ex)jdk bin Path"\n' + 
         '}';
-    const fileExist = checkJenvSetJson(filePath);
+    const fileExist = await checkJenvSetJson(filePath);
     if (fileExist) {
         print.red("file is exist\nplease check path => " + filePath);
         process.exit();
